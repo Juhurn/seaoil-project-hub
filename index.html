@@ -2,99 +2,531 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SEAOIL Project Hub</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f3f6fb;
-      color: #172033;
-    }
-    header {
-      background: #101a32;
-      color: white;
-      padding: 30px 7%;
-    }
-    header h1 { margin: 0 0 8px; font-size: 28px; }
-    header p { margin: 0; color: #c5d0e5; }
-    main { max-width: 1050px; margin: 45px auto; padding: 0 20px; }
-    .intro { margin-bottom: 28px; }
-    .intro h2 { font-size: 25px; margin-bottom: 8px; }
-    .intro p { color: #667085; line-height: 1.6; }
-    .projects {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 22px;
-    }
-    .card {
-      background: white;
-      padding: 26px;
-      border: 1px solid #e0e6ef;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px #1720330b;
-    }
-    .icon { font-size: 35px; }
-    .card h3 { margin: 16px 0 10px; }
-    .card p { color: #667085; line-height: 1.6; min-height: 70px; }
-    .button {
-      display: inline-block;
-      background: #315ee8;
-      color: white;
-      padding: 12px 17px;
-      border-radius: 9px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 14px;
-    }
-    .button:hover { background: #2348bd; }
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #8791a3;
-      font-size: 12px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#092b5a">
+<title>SEAOIL Project Hub</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --navy: #092b5a;
+  --blue: #1556a8;
+  --yellow: #ffd21f;
+  --ink: #172b49;
+  --muted: #66768d;
+  --line: #e2e9f2;
+  --bg: #f4f7fb;
+  --white: #fff;
+  --shadow: 0 16px 42px rgba(9,43,90,.09);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Nunito', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { font-family: inherit; }
+
+.topbar {
+  background: linear-gradient(115deg, #071f43 0%, #0b3269 65%, #10437b 100%);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.topbar::before {
+  content: "";
+  position: absolute;
+  right: -90px;
+  top: -205px;
+  width: 360px;
+  height: 360px;
+  border: 42px solid rgba(255,210,31,.95);
+  border-radius: 50%;
+}
+
+.topbar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 65%, rgba(0,0,0,.12));
+  pointer-events: none;
+}
+
+.top-inner {
+  max-width: 1180px;
+  margin: auto;
+  padding: 22px 26px 34px;
+  position: relative;
+  z-index: 1;
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+}
+
+.logo-wrap {
+  width: 66px;
+  height: 58px;
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px;
+  flex: none;
+}
+
+.logo-wrap img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.logo-fallback {
+  display: none;
+  color: var(--navy);
+  font-size: 12px;
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.05;
+}
+
+.brand-title {
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: .1px;
+  margin: 0;
+}
+
+.brand-sub {
+  font-size: 12px;
+  color: #d5e1f3;
+  margin: 4px 0 0;
+}
+
+.top-label {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 999px;
+  padding: 9px 13px;
+  color: #f5f7fc;
+}
+
+.hero {
+  padding-top: 35px;
+  max-width: 750px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--yellow);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 23px;
+  height: 3px;
+  background: var(--yellow);
+  border-radius: 4px;
+}
+
+.hero h1 {
+  font-size: clamp(30px, 5vw, 43px);
+  line-height: 1.12;
+  letter-spacing: -.8px;
+  margin: 12px 0 10px;
+  font-weight: 900;
+}
+
+.hero p {
+  max-width: 650px;
+  color: #d6e1f2;
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.hero-accent {
+  height: 5px;
+  width: 78px;
+  border-radius: 8px;
+  background: var(--yellow);
+  margin-top: 19px;
+}
+
+/* Small Fuel and Beyond banner */
+.fuel-badge {
+  position: absolute;
+  right: 26px;
+  bottom: 20px;
+  width: 190px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  background: #00acd2;
+  border-radius: 13px 13px 13px 4px;
+  transform: skewX(-7deg);
+  box-shadow: 0 7px 18px rgba(0,0,0,.17);
+  z-index: 2;
+}
+
+.fuel-badge img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transform: skewX(7deg);
+}
+
+.fuel-fallback {
+  display: none;
+  color: white;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: -.5px;
+  transform: skewX(7deg);
+}
+
+.fuel-fallback span { color: #082c5c; }
+
+main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 26px 42px;
+}
+
+.section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 28px 0 18px;
+}
+
+.section-head h2 {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: -.3px;
+}
+
+.section-head p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.project-count {
+  background: #e8eef8;
+  color: var(--navy);
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.project-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 48px rgba(9,43,90,.13);
+}
+
+.card-top {
+  height: 7px;
+  background: var(--yellow);
+}
+
+.card-content {
+  padding: 24px 25px 23px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-icon {
+  height: 52px;
+  width: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #eaf1fc;
+  color: var(--navy);
+  font-size: 27px;
+}
+
+.project-card:nth-child(2) .card-icon {
+  background: #fff5cc;
+}
+
+.card-kicker {
+  margin: 18px 0 5px;
+  color: var(--blue);
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.project-card h3 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.card-desc {
+  margin: 10px 0 20px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  flex: 1;
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0 0 22px;
+}
+
+.features span {
+  background: #f1f4f9;
+  color: #42546d;
+  border-radius: 7px;
+  padding: 6px 9px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.open-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-decoration: none;
+  background: var(--navy);
+  color: white;
+  border-radius: 10px;
+  padding: 12px 15px;
+  font-size: 14px;
+  font-weight: 900;
+  transition: background .15s ease;
+}
+
+.open-link:hover { background: var(--blue); }
+
+.arrow {
+  font-size: 20px;
+  color: var(--yellow);
+  line-height: 1;
+}
+
+.note {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 22px;
+  padding: 15px 17px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.note strong { color: var(--ink); }
+
+footer {
+  max-width: 1180px;
+  margin: auto;
+  padding: 0 26px 25px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: #8290a4;
+  font-size: 11px;
+}
+
+footer strong { color: var(--navy); }
+
+@media (max-width: 760px) {
+  .top-inner { padding: 17px 18px 27px; }
+  .brand-title { font-size: 18px; }
+  .logo-wrap { width: 56px; height: 52px; }
+  .top-label { display: none; }
+  .hero { padding-top: 29px; padding-bottom: 58px; }
+  .hero p { font-size: 14px; }
+  .fuel-badge {
+    width: 135px;
+    height: 42px;
+    right: 18px;
+    bottom: 13px;
+    padding: 4px 7px;
+  }
+  .fuel-fallback { font-size: 14px; }
+  main { padding: 0 18px 30px; }
+  .projects { grid-template-columns: 1fr; gap: 15px; }
+  .card-content { padding: 21px; }
+  .section-head h2 { font-size: 23px; }
+  footer { padding: 0 18px 20px; }
+  .topbar::before { right: -170px; top: -215px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto; transition: none !important; }
+}
+</style>
 </head>
+
 <body>
-  <header>
-    <h1>SEAOIL Project Hub</h1>
-    <p>Central workspace for monitoring and analysis projects</p>
-  </header>
+<header class="topbar">
+  <div class="top-inner">
+    <div class="brand-row">
+      <div class="brand">
+        <div class="logo-wrap">
+          <img
+            src="https://raw.githubusercontent.com/Juhurn/marine-vessel-monitoring-2026/main/SEAOIL_Logo.png"
+            alt="SEAOIL logo"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <div class="logo-fallback">SEAOIL<br>PHILIPPINES</div>
+        </div>
+        <div>
+          <p class="brand-title">SEAOIL Project Hub</p>
+          <p class="brand-sub">Monitoring · Analysis · Project Workspace</p>
+        </div>
+      </div>
+      <div class="top-label">Central Project Portal</div>
+    </div>
 
-  <main>
-    <section class="intro">
+    <section class="hero">
+      <div class="eyebrow">Your workspace, in one place</div>
+      <h1>Welcome to your Project Hub.</h1>
+      <p>Access your monitoring and analysis tools from one central workspace. Choose a project below to open its dashboard.</p>
+      <div class="hero-accent"></div>
+    </section>
+
+    <div class="fuel-badge" aria-label="SEAOIL Fuel and Beyond">
+      <img
+        src="https://raw.githubusercontent.com/Juhurn/marine-vessel-monitoring-2026/main/SEAOIL_Fuel_and_Beyond.png"
+        alt="SEAOIL fuel and beyond"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="fuel-fallback">fuel and <span>beyond</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="section-head">
+    <div>
       <h2>My Projects</h2>
-      <p>Select a project below to open its dashboard.</p>
-    </section>
+      <p>Select a project to continue.</p>
+    </div>
+    <span class="project-count">2 PROJECTS</span>
+  </div>
 
-    <section class="projects">
-      <article class="card">
-        <div class="icon">🚢</div>
+  <section class="projects">
+    <article class="project-card">
+      <div class="card-top"></div>
+      <div class="card-content">
+        <div class="card-icon" aria-hidden="true">🚢</div>
+        <div class="card-kicker">Project 01 · Operations</div>
         <h3>Marine Vessel Monitoring</h3>
-        <p>Monitor vessel movements, analyze product losses and variances, and review operational performance.</p>
-        <a class="button"
-           href="https://juhurn.github.io/marine-vessel-monitoring-2026/">
-          Open Project
+        <p class="card-desc">Monitor vessel movements, review product losses and transfer variances, and explore operational performance through the existing dashboard.</p>
+        <div class="features">
+          <span>Vessel Audit</span>
+          <span>Loss Analysis</span>
+          <span>Variance Reports</span>
+        </div>
+        <a class="open-link" href="https://juhurn.github.io/marine-vessel-monitoring-2026/">
+          <span>Open Marine Monitoring</span><span class="arrow">→</span>
         </a>
-      </article>
+      </div>
+    </article>
 
-      <article class="card">
-        <div class="icon">🔍</div>
+    <article class="project-card">
+      <div class="card-top"></div>
+      <div class="card-content">
+        <div class="card-icon" aria-hidden="true">🔎</div>
+        <div class="card-kicker">Project 02 · Image Review</div>
         <h3>AI Image Forensics</h3>
-        <p>Review images for possible AI generation and image manipulation. Detection results require a connected analysis engine.</p>
-        <a class="button"
-           href="https://juhurn.github.io/ai-image-forensics/">
-          Open Project
+        <p class="card-desc">Review images for possible AI generation and signs of image manipulation. Reliable findings require a connected detection engine.</p>
+        <div class="features">
+          <span>Image Upload</span>
+          <span>AI Indicators</span>
+          <span>Manipulation Review</span>
+        </div>
+        <a class="open-link" href="https://juhurn.github.io/ai-image-forensics/">
+          <span>Open AI Image Forensics</span><span class="arrow">→</span>
         </a>
-      </article>
-    </section>
-  </main>
+      </div>
+    </article>
+  </section>
 
-  <footer>
-    SEAOIL Project Hub · Central Project Portal
-  </footer>
+  <aside class="note">
+    <span aria-hidden="true">ℹ️</span>
+    <div>
+      <strong>Project access</strong><br>
+      This hub links to each project’s existing website. The dashboards remain separately hosted, so updates to this hub do not overwrite project data or dashboard code.
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <span><strong>SEAOIL Project Hub</strong> · Central Project Portal</span>
+  <span>Built for streamlined project access</span>
+</footer>
 </body>
 </html>
