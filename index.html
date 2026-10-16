@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEAOIL Project Hub</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f6fb;
+      color: #172033;
+    }
+    header {
+      background: #101a32;
+      color: white;
+      padding: 30px 7%;
+    }
+    header h1 { margin: 0 0 8px; font-size: 28px; }
+    header p { margin: 0; color: #c5d0e5; }
+    main { max-width: 1050px; margin: 45px auto; padding: 0 20px; }
+    .intro { margin-bottom: 28px; }
+    .intro h2 { font-size: 25px; margin-bottom: 8px; }
+    .intro p { color: #667085; line-height: 1.6; }
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+    }
+    .card {
+      background: white;
+      padding: 26px;
+      border: 1px solid #e0e6ef;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px #1720330b;
+    }
+    .icon { font-size: 35px; }
+    .card h3 { margin: 16px 0 10px; }
+    .card p { color: #667085; line-height: 1.6; min-height: 70px; }
+    .button {
+      display: inline-block;
+      background: #315ee8;
+      color: white;
+      padding: 12px 17px;
+      border-radius: 9px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .button:hover { background: #2348bd; }
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #8791a3;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>SEAOIL Project Hub</h1>
+    <p>Central workspace for monitoring and analysis projects</p>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>My Projects</h2>
+      <p>Select a project below to open its dashboard.</p>
+    </section>
+
+    <section class="projects">
+      <article class="card">
+        <div class="icon">🚢</div>
+        <h3>Marine Vessel Monitoring</h3>
+        <p>Monitor vessel movements, analyze product losses and variances, and review operational performance.</p>
+        <a class="button"
+           href="https://juhurn.github.io/marine-vessel-monitoring-2026/">
+          Open Project
+        </a>
+      </article>
+
+      <article class="card">
+        <div class="icon">🔍</div>
+        <h3>AI Image Forensics</h3>
+        <p>Review images for possible AI generation and image manipulation. Detection results require a connected analysis engine.</p>
+        <a class="button"
+           href="https://juhurn.github.io/ai-image-forensics/">
+          Open Project
+        </a>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    SEAOIL Project Hub · Central Project Portal
+  </footer>
+</body>
+</html>
