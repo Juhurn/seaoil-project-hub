@@ -186,7 +186,7 @@ a { font-family: inherit; }
   margin-top: 19px;
 }
 
-/* Small Fuel and Beyond banner */
+/* Fuel and Beyond banner */
 .fuel-badge {
   position: absolute;
   right: 26px;
@@ -275,6 +275,7 @@ main {
   display: flex;
   flex-direction: column;
   transition: transform .18s ease, box-shadow .18s ease;
+  min-width: 0;
 }
 
 .project-card:hover {
@@ -285,6 +286,7 @@ main {
 .card-top {
   height: 7px;
   background: var(--yellow);
+  flex: none;
 }
 
 .card-content {
@@ -292,6 +294,7 @@ main {
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-width: 0;
 }
 
 .card-icon {
@@ -303,10 +306,15 @@ main {
   background: #eaf1fc;
   color: var(--navy);
   font-size: 27px;
+  flex: none;
 }
 
 .project-card:nth-child(2) .card-icon {
   background: #fff5cc;
+}
+
+.project-card:nth-child(3) .card-icon {
+  background: #eaf1fc;
 }
 
 .card-kicker {
@@ -474,7 +482,7 @@ footer strong { color: var(--navy); }
       <h2>My Projects</h2>
       <p>Select a project to continue.</p>
     </div>
-    <span class="project-count">2 PROJECTS</span>
+    <span class="project-count">3 PROJECTS</span>
   </div>
 
   <section class="projects">
@@ -513,20 +521,24 @@ footer strong { color: var(--navy); }
         </a>
       </div>
     </article>
+
     <article class="project-card">
-  <div class="card-icon" aria-hidden="true">🚚</div>
-  <div class="card-kicker">Project 03 · Fleet Monitoring</div>
-  <h3>GPS Truck Monitoring &amp; Audit System</h3>
-  <p class="card-desc">Monitor truck locations, track trip activity, and support operational audits through GPS-based fleet monitoring.</p>
-  <div class="features">
-    <span>GPS Tracking</span>
-    <span>Trip Monitoring</span>
-    <span>Audit Reports</span>
-  </div>
-  <a class="open-link" href="https://juhurn.github.io/gps-truck-monitoring/">
-    <span>Open GPS Truck Monitoring</span><span class="arrow">→</span>
-  </a>
-</article>
+      <div class="card-top"></div>
+      <div class="card-content">
+        <div class="card-icon" aria-hidden="true">🚚</div>
+        <div class="card-kicker">Project 03 · Fleet Monitoring</div>
+        <h3>GPS Truck Monitoring &amp; Audit System</h3>
+        <p class="card-desc">Monitor truck locations, track trip activity, and support operational audits through GPS-based fleet monitoring.</p>
+        <div class="features">
+          <span>GPS Tracking</span>
+          <span>Trip Monitoring</span>
+          <span>Audit Reports</span>
+        </div>
+        <a class="open-link" href="https://juhurn.github.io/gps-truck-monitoring/">
+          <span>Open GPS Truck Monitoring</span><span class="arrow">→</span>
+        </a>
+      </div>
+    </article>
   </section>
 
   <aside class="note">
