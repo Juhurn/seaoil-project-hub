@@ -1,558 +1,194 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#092b5a">
-<title>SEAOIL Project Hub</title>
-
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+<title>GPS Truck Monitoring & Audit System</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
-:root {
-  --navy: #092b5a;
-  --blue: #1556a8;
-  --yellow: #ffd21f;
-  --ink: #172b49;
-  --muted: #66768d;
-  --line: #e2e9f2;
-  --bg: #f4f7fb;
-  --white: #fff;
-  --shadow: 0 16px 42px rgba(9,43,90,.09);
-}
+:root{--navy:#092b5a;--blue:#1556a8;--ink:#172b49;--muted:#66768d;--line:#e2e9f2;--bg:#f4f7fb;--white:#fff;--red:#b42318;--amber:#9a6700;--green:#137547}*{box-sizing:border-box;font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Nunito,system-ui,-apple-system,Segoe UI,sans-serif}header{background:var(--navy);color:white;padding:22px max(20px,calc((100% - 1240px)/2));display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}header h1{font-size:22px;margin:0}header p{margin:4px 0 0;color:#d9e6fa}.wrap{max-width:1240px;margin:24px auto;padding:0 18px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab,button{border:1px solid var(--line);background:white;color:var(--ink);padding:10px 14px;border-radius:9px;font-weight:700;cursor:pointer}.tab.active,button.primary{background:var(--blue);border-color:var(--blue);color:white}button:disabled{opacity:.5;cursor:not-allowed}.panel{background:white;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 3px 12px #163b6510}.panel h2{margin:0 0 6px;font-size:18px}.muted{color:var(--muted)}.uploadbox{border:2px dashed #9bb5d5;border-radius:12px;background:#f8fbff;padding:28px;text-align:center}.uploadbox input{max-width:100%;margin:12px auto;display:block}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.kpi{padding:16px;border:1px solid var(--line);border-radius:12px;background:white}.kpi .num{font-size:26px;font-weight:800;margin-top:5px}.kpi .label{color:var(--muted);font-size:12px}.kpi.alert .num{color:var(--red)}.kpi.warn .num{color:var(--amber)}.status{padding:4px 8px;border-radius:999px;font-size:12px;font-weight:800;background:#eef2f7}.status.high{color:var(--red);background:#feeceb}.status.medium{color:var(--amber);background:#fff4d6}.status.low{color:var(--green);background:#e4f7ec}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{border-collapse:collapse;width:100%;min-width:760px}th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f6f8fb;color:#52637a;font-size:12px;text-transform:uppercase;letter-spacing:.03em}tr:last-child td{border-bottom:0}.empty{padding:28px;text-align:center;color:var(--muted)}.hidden{display:none!important}.mapping{display:grid;grid-template-columns:repeat(3,minmax(180px,1fr));gap:12px;margin-top:16px}.mapping label{font-weight:700;font-size:12px;color:var(--muted)}select,input[type=number],input[type=text]{width:100%;padding:9px;border:1px solid #cbd5e1;border-radius:8px;margin-top:4px;color:var(--ink);background:white}.note{font-size:12px;background:#f6f8fb;padding:12px;border-radius:9px;color:#52637a}.notice{padding:12px;border-radius:9px;margin-top:12px}.notice.error{background:#feeceb;color:#912018}.notice.success{background:#e4f7ec;color:#11633b}.notice.info{background:#eaf2ff;color:#164783}.small{font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}footer{max-width:1240px;margin:0 auto;padding:4px 18px 28px;color:var(--muted);font-size:12px}@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mapping{grid-template-columns:1fr 1fr}}@media(max-width:480px){.grid,.mapping{grid-template-columns:1fr}.wrap{margin-top:14px}.panel{padding:14px}}
 
-* { box-sizing: border-box; }
+/* SEAOIL Project Hub navigation */
+body>.hub-back{margin:14px 18px 0}.hub-back{display:inline-flex;align-items:center;gap:8px;margin:0 0 14px;padding:9px 14px;border:1px solid #cbd8e8;border-radius:9px;background:#fff;color:#092b5a;text-decoration:none;font:800 13px Nunito,system-ui,sans-serif;box-shadow:0 2px 8px rgba(9,43,90,.07);transition:background .15s ease,transform .15s ease}
+.hub-back:hover{background:#fff5cc;transform:translateY(-1px)}
+.hub-back:focus-visible{outline:3px solid #ffd21f;outline-offset:2px}
 
-html { scroll-behavior: smooth; }
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: 'Nunito', sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-a { font-family: inherit; }
-
-.topbar {
-  background: linear-gradient(115deg, #071f43 0%, #0b3269 65%, #10437b 100%);
-  color: white;
-  position: relative;
-  overflow: hidden;
-}
-
-.topbar::before {
-  content: "";
-  position: absolute;
-  right: -90px;
-  top: -205px;
-  width: 360px;
-  height: 360px;
-  border: 42px solid rgba(255,210,31,.95);
-  border-radius: 50%;
-}
-
-.topbar::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent 65%, rgba(0,0,0,.12));
-  pointer-events: none;
-}
-
-.top-inner {
-  max-width: 1180px;
-  margin: auto;
-  padding: 22px 26px 34px;
-  position: relative;
-  z-index: 1;
-}
-
-.brand-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  flex-wrap: wrap;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  min-width: 0;
-}
-
-.logo-wrap {
-  width: 66px;
-  height: 58px;
-  background: white;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 7px;
-  flex: none;
-}
-
-.logo-wrap img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.logo-fallback {
-  display: none;
-  color: var(--navy);
-  font-size: 12px;
-  font-weight: 900;
-  text-align: center;
-  line-height: 1.05;
-}
-
-.brand-title {
-  font-size: 21px;
-  font-weight: 900;
-  letter-spacing: .1px;
-  margin: 0;
-}
-
-.brand-sub {
-  font-size: 12px;
-  color: #d5e1f3;
-  margin: 4px 0 0;
-}
-
-.top-label {
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 1.1px;
-  text-transform: uppercase;
-  border: 1px solid rgba(255,255,255,.24);
-  border-radius: 999px;
-  padding: 9px 13px;
-  color: #f5f7fc;
-}
-
-.hero {
-  padding-top: 35px;
-  max-width: 750px;
-}
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--yellow);
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 1.6px;
-  text-transform: uppercase;
-}
-
-.eyebrow::before {
-  content: "";
-  width: 23px;
-  height: 3px;
-  background: var(--yellow);
-  border-radius: 4px;
-}
-
-.hero h1 {
-  font-size: clamp(30px, 5vw, 43px);
-  line-height: 1.12;
-  letter-spacing: -.8px;
-  margin: 12px 0 10px;
-  font-weight: 900;
-}
-
-.hero p {
-  max-width: 650px;
-  color: #d6e1f2;
-  font-size: 15px;
-  line-height: 1.7;
-  margin: 0;
-}
-
-.hero-accent {
-  height: 5px;
-  width: 78px;
-  border-radius: 8px;
-  background: var(--yellow);
-  margin-top: 19px;
-}
-
-/* Fuel and Beyond banner */
-.fuel-badge {
-  position: absolute;
-  right: 26px;
-  bottom: 20px;
-  width: 190px;
-  height: 58px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px 10px;
-  background: #00acd2;
-  border-radius: 13px 13px 13px 4px;
-  transform: skewX(-7deg);
-  box-shadow: 0 7px 18px rgba(0,0,0,.17);
-  z-index: 2;
-}
-
-.fuel-badge img {
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  transform: skewX(7deg);
-}
-
-.fuel-fallback {
-  display: none;
-  color: white;
-  font-size: 18px;
-  font-weight: 900;
-  letter-spacing: -.5px;
-  transform: skewX(7deg);
-}
-
-.fuel-fallback span { color: #082c5c; }
-
-main {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 26px 42px;
-}
-
-.section-head {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 18px;
-  flex-wrap: wrap;
-  padding: 28px 0 18px;
-}
-
-.section-head h2 {
-  margin: 0;
-  font-size: 25px;
-  font-weight: 900;
-  letter-spacing: -.3px;
-}
-
-.section-head p {
-  margin: 5px 0 0;
-  color: var(--muted);
-  font-size: 14px;
-}
-
-.project-count {
-  background: #e8eef8;
-  color: var(--navy);
-  border-radius: 999px;
-  padding: 7px 12px;
-  font-size: 12px;
-  font-weight: 900;
-}
-
-.projects {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
-}
-
-.project-card {
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-  transition: transform .18s ease, box-shadow .18s ease;
-  min-width: 0;
-}
-
-.project-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 20px 48px rgba(9,43,90,.13);
-}
-
-.card-top {
-  height: 7px;
-  background: var(--yellow);
-  flex: none;
-}
-
-.card-content {
-  padding: 24px 25px 23px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-}
-
-.card-icon {
-  height: 52px;
-  width: 52px;
-  display: grid;
-  place-items: center;
-  border-radius: 14px;
-  background: #eaf1fc;
-  color: var(--navy);
-  font-size: 27px;
-  flex: none;
-}
-
-.project-card:nth-child(2) .card-icon {
-  background: #fff5cc;
-}
-
-.project-card:nth-child(3) .card-icon {
-  background: #eaf1fc;
-}
-
-.card-kicker {
-  margin: 18px 0 5px;
-  color: var(--blue);
-  font-size: 11px;
-  letter-spacing: 1.2px;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.project-card h3 {
-  margin: 0;
-  font-size: 21px;
-  font-weight: 900;
-  line-height: 1.25;
-}
-
-.card-desc {
-  margin: 10px 0 20px;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.7;
-  flex: 1;
-}
-
-.features {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin: 0 0 22px;
-}
-
-.features span {
-  background: #f1f4f9;
-  color: #42546d;
-  border-radius: 7px;
-  padding: 6px 9px;
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.open-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  text-decoration: none;
-  background: var(--navy);
-  color: white;
-  border-radius: 10px;
-  padding: 12px 15px;
-  font-size: 14px;
-  font-weight: 900;
-  transition: background .15s ease;
-}
-
-.open-link:hover { background: var(--blue); }
-
-.arrow {
-  font-size: 20px;
-  color: var(--yellow);
-  line-height: 1;
-}
-
-.note {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  margin-top: 22px;
-  padding: 15px 17px;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.note strong { color: var(--ink); }
-
-footer {
-  max-width: 1180px;
-  margin: auto;
-  padding: 0 26px 25px;
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  color: #8290a4;
-  font-size: 11px;
-}
-
-footer strong { color: var(--navy); }
-
-@media (max-width: 760px) {
-  .top-inner { padding: 17px 18px 27px; }
-  .brand-title { font-size: 18px; }
-  .logo-wrap { width: 56px; height: 52px; }
-  .top-label { display: none; }
-  .hero { padding-top: 29px; padding-bottom: 58px; }
-  .hero p { font-size: 14px; }
-  .fuel-badge {
-    width: 135px;
-    height: 42px;
-    right: 18px;
-    bottom: 13px;
-    padding: 4px 7px;
-  }
-  .fuel-fallback { font-size: 14px; }
-  main { padding: 0 18px 30px; }
-  .projects { grid-template-columns: 1fr; gap: 15px; }
-  .card-content { padding: 21px; }
-  .section-head h2 { font-size: 23px; }
-  footer { padding: 0 18px 20px; }
-  .topbar::before { right: -170px; top: -215px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * { scroll-behavior: auto; transition: none !important; }
-}
-</style>
-</head>
-
+#routeMap{height:430px;border:1px solid var(--line);border-radius:10px;z-index:1}.stop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.stop-card{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff;break-inside:avoid}.stop-card h3{margin:0;font-size:16px}.stop-map{height:210px;border:1px solid var(--line);border-radius:9px;margin:12px 0;z-index:1}.stop-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}.stop-meta div{background:#f6f8fb;border-radius:8px;padding:8px}.stop-meta small{display:block;color:var(--muted);font-size:11px}.stop-narrative{line-height:1.65;margin:10px 0}.evidence-list{margin:8px 0 0;padding-left:18px}.stop-links{display:flex;gap:8px;flex-wrap:wrap}.stop-links a{font-weight:800;color:var(--blue)}@media(max-width:760px){.stop-grid{grid-template-columns:1fr}}@media print{.stop-card{break-inside:avoid}.stop-map{height:180px}}.flag-pin{background:#b42318;border:2px solid #fff;border-radius:50%;width:16px;height:16px;box-shadow:0 1px 5px #333}
+</style></head>
 <body>
-<header class="topbar">
-  <div class="top-inner">
-    <div class="brand-row">
-      <div class="brand">
-        <div class="logo-wrap">
-          <img
-            src="https://raw.githubusercontent.com/Juhurn/marine-vessel-monitoring-2026/main/SEAOIL_Logo.png"
-            alt="SEAOIL logo"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-          <div class="logo-fallback">SEAOIL<br>PHILIPPINES</div>
-        </div>
-        <div>
-          <p class="brand-title">SEAOIL Project Hub</p>
-          <p class="brand-sub">Monitoring · Analysis · Project Workspace</p>
-        </div>
-      </div>
-      <div class="top-label">Central Project Portal</div>
-    </div>
+<a class="hub-back" href="https://juhurn.github.io/seaoil-project-hub/" aria-label="Back to SEAOIL Project Hub">&#8592; Back to Dashboard</a>
+<header><div><h1>GPS Truck Monitoring &amp; Audit System</h1><p>GPS log ingestion · operational exception checks · audit-ready exports</p></div><div class="small">SEAOIL Project 03</div></header>
+<main class="wrap">
+<div class="tabs"><button class="tab active" data-tab="upload">1 · Upload &amp; Configure</button><button class="tab" data-tab="results">2 · Analysis Results</button><button class="tab" data-tab="report">3 · Audit Report</button></div>
+<section id="upload" class="tabpage">
+<div class="panel"><h2>Upload GPS log file</h2><p class="muted">Supported now: CSV, XLSX, XLS and tab-delimited TXT. Data is processed in this browser. Files are not sent to a server by this page.</p>
+<div class="uploadbox"><strong>Select a GPS log file</strong><p class="muted">Use the original export from your GPS provider where possible.</p><input id="fileInput" type="file" accept=".csv,.xlsx,.xls,.txt,.tsv"><div class="row" style="justify-content:center"><button id="sampleBtn">Load example data</button><button id="clearBtn">Clear current data</button></div><div id="fileStatus" class="small muted" aria-live="polite">No file loaded.</div></div>
+<div id="mappingPanel" class="hidden"><div id="detectionSummary" class="note" style="margin-top:16px">The system will inspect the uploaded file and identify available GPS fields automatically.</div><div id="analysisStatus" aria-live="polite"></div></div></div>
+<div class="panel"><h2>Route deviation audit</h2>
+<p class="muted">Compares each truck's first-to-last recorded GPS positions against a Google driving route. This is a preliminary screening check; confirm the actual dispatch route before concluding a deviation.</p>
+<div class="mapping">
+<label>Apps Script Web App URL<input id="routeBackend" type="text" value="https://script.google.com/macros/s/AKfycbynjcZZw492pFN1BlAu7AnycQ4b_fm6rvVVCIt70CAfSdBoVOeZGQUNRSp-n05Hs-eC/exec"></label>
+<label>Off-route tolerance (meters)<input id="routeTolerance" type="number" min="50" max="5000" value="500"></label>
+<label>Consecutive off-route points<input id="routeConsecutive" type="number" min="2" max="20" value="3"></label>
+</div>
+<div class="actions"><button class="primary" id="routeAuditBtn" disabled>Run Route Deviation Audit</button></div>
+<div id="routeStatus" class="notice info">Upload and analyze a GPS file first. Route lookup will use each vehicle's earliest and latest valid GPS coordinates.</div>
+</div>
+<div class="panel"><h2>What the checks mean</h2><div class="note"><b>Long stop:</b> consecutive records for the same truck with unchanged coordinates for at least the configured threshold. <b>Speed alert:</b> recorded speed above your selected limit. <b>GPS gap:</b> time between consecutive records for the same truck exceeds the threshold. These are screening flags, not proof of misconduct. Route deviation requires a planned route or approved geofence dataset, which this version does not infer.</div></div>
+</section>
+<section id="results" class="tabpage hidden"><div class="grid" id="kpis"><div class="kpi"><div class="label">Rows processed</div><div class="num">0</div></div><div class="kpi"><div class="label">Trucks identified</div><div class="num">0</div></div><div class="kpi alert"><div class="label">High-priority flags</div><div class="num">0</div></div><div class="kpi warn"><div class="label">Total flags</div><div class="num">0</div></div></div><div class="panel"><div class="row" style="justify-content:space-between"><div><h2>Detected exceptions</h2><p class="muted">Each result references a record or pair of timestamps from the uploaded data.</p></div><select id="severityFilter" style="width:auto"><option value="all">All severities</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select></div><div id="exceptionsTable" class="tablewrap"><div class="empty">Upload and analyze a GPS file to see results.</div></div></div><div class="panel"><h2>Detailed Stop Investigation</h2><p class="muted">Every detected prolonged stop is presented with its time window, duration, GPS coordinates, map location, source records and an evidence-based audit narrative.</p><div id="stopInvestigationResults"><div class="empty">Upload and analyze a GPS file to see detailed stop findings.</div></div></div><div class="panel"><h2>Data quality</h2><div id="qualityTable" class="tablewrap"><div class="empty">No data analyzed yet.</div></div></div><div class="panel"><h2>Red-flag map</h2><p class="muted">Only detected route-deviation locations are plotted; ordinary GPS points and the full truck track are not shown.</p><div id="routeMap"></div><div id="routeFlagTable" class="tablewrap" style="margin-top:14px"><div class="empty">No route audit completed yet.</div></div></div></section>
+<section id="report" class="tabpage hidden"><div class="panel"><h2>Audit report export</h2><p class="muted">Download a CSV of all detected flags or a normalized CSV of the imported records for review.</p><div class="actions"><button class="primary" id="exportFlags" disabled>Download findings CSV</button><button id="exportRows" disabled>Download normalized GPS data CSV</button><button id="exportStops" disabled>Download stop investigation CSV</button><button id="printReport" disabled>Print / Save report as PDF</button></div><div id="reportSummary" class="note" style="margin-top:16px">Analyze a file first. Reports are generated from the current uploaded dataset only.</div><div class="panel" style="margin-top:16px"><h2>Detailed stop investigation narratives</h2><p class="muted">Print-ready stop-by-stop findings with GPS evidence and map references.</p><div id="stopInvestigationReport"><div class="empty">No stop findings available.</div></div></div></div></section>
+</main><footer>Operational screening tool. Confirm flagged events against dispatch records, route plans, GPS-provider definitions and other evidence before making audit conclusions.</footer>
+<script>
+const $=id=>document.getElementById(id);let rawRows=[],headers=[],normalized=[],findings=[],quality=[],stopEvents=[],fileName='gps-log',columnMap={},sourceRowStart=2,routeFindings=[],routeMap=null,routeMarkers=[],stopMaps=[];const fields=[{key:'truck',aliases:['truck','vehicle','plate','unit','asset','device name','vehicle id','registration','truck no','plate no','car number','vehicle name','imei','driver','driver name','operator']},{key:'time',aliases:['timestamp','date time','datetime','date','time','recorded at','gps time','event time','gps date','report time','定位时间']},{key:'lat',aliases:['latitude','lat','纬度']},{key:'lon',aliases:['longitude','lon','lng','long','经度']},{key:'speed',aliases:['speed','speed km/h','km/h','velocity','速度']},{key:'status',aliases:['status','event','events','event type','ignition','trip status','acc status','gps status']},{key:'location',aliases:['location','address','place','geofence','site','position','地点']},{key:'odometer',aliases:['odometer','odo','odometer reading']},{key:'duration',aliases:['duration','stop duration','event duration','idle duration']},{key:'distance',aliases:['distance','trip distance','travel distance','mileage'] }];const AUDIT_DEFAULTS={speedLimit:80,stopLimit:30,gapLimit:20};
+function norm(s){return String(s??'').trim().toLowerCase().replace(/[_-]+/g,' ').replace(/\s+/g,' ')}function parseDate(v){if(v instanceof Date&&!isNaN(v))return v;if(typeof v==='number'&&v>20000&&v<100000)return new Date(Math.round((v-25569)*86400000));let s=String(v??'').trim();if(!s)return null;let d=new Date(s);if(!isNaN(d))return d;const m=s.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})(?:\s+(\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);if(m){let a=+m[1],b=+m[2],y=+m[3];if(y<100)y+=2000;let day,month;if(a>12){day=a;month=b-1}else{month=a-1;day=b}d=new Date(y,month,day,+(m[4]||0),+(m[5]||0),+(m[6]||0));return isNaN(d)?null:d}return null}function num(v){if(v===null||v===undefined||String(v).trim()==='')return null;let n=Number(String(v).replace(/,/g,'').replace(/[^0-9.+-]/g,''));return Number.isFinite(n)?n:null}function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function setTab(name){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));document.querySelectorAll('.tabpage').forEach(p=>p.classList.toggle('hidden',p.id!==name));if(name==='results'||name==='report')setTimeout(()=>stopMaps.forEach(m=>m.invalidateSize()),150)}document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
+$('fileInput').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;fileName=f.name.replace(/\.[^.]+$/,'')||'gps-log';$('fileStatus').textContent=`Reading ${f.name}…`;try{let wb;if(/\.xlsx?$/i.test(f.name)){if(!window.XLSX)throw Error('Excel reader did not load. Check your internet connection, then refresh.');wb=XLSX.read(await f.arrayBuffer(),{type:'array',cellDates:true});const sheet=wb.Sheets[wb.SheetNames[0]];const matrix=XLSX.utils.sheet_to_json(sheet,{header:1,defval:'',raw:true});const detected=extractRowsFromMatrix(matrix);rawRows=detected.rows;headers=detected.headers;sourceRowStart=detected.sourceRowStart;}else{const txt=await f.text();if(/\.json$/i.test(f.name)){const j=JSON.parse(txt);rawRows=Array.isArray(j)?j:(j.data||j.rows||[]);headers=Object.keys(rawRows[0]||{});sourceRowStart=2;}else{const delimiter=f.name.toLowerCase().endsWith('.tsv')?'\t':(txt.split(/\r?\n/)[0].split(';').length>txt.split(/\r?\n/)[0].split(',').length?';':',');const matrix=parseDelimitedMatrix(txt,delimiter);const detected=extractRowsFromMatrix(matrix);rawRows=detected.rows;headers=detected.headers;sourceRowStart=detected.sourceRowStart;}}if(!rawRows.length)throw Error('No data rows found. The file may contain report pages or unsupported formatting.');if(!headers.length)throw Error('Could not identify a usable header row.');detectColumns();$('fileStatus').textContent=`Loaded ${f.name}: ${rawRows.length.toLocaleString()} data rows, ${headers.length} columns detected.`;$('mappingPanel').classList.remove('hidden');analyze();}catch(err){$('fileStatus').textContent='Could not load file.';$('analysisStatus').innerHTML=`<div class="notice error">${escapeHtml(err.message||err)}</div>`;$('mappingPanel').classList.remove('hidden')}});
+function parseDelimitedMatrix(text,delimiter){const lines=text.replace(/^\uFEFF/,'').split(/\r?\n/).filter(l=>l.trim()!=='');function split(line){let out=[],cur='',q=false;for(let i=0;i<line.length;i++){let c=line[i];if(c==='"'&&line[i+1]==='"'&&q){cur+='"';i++}else if(c==='"')q=!q;else if(c===delimiter&&!q){out.push(cur);cur=''}else cur+=c}out.push(cur);return out}return lines.map(split)}
+function headerScore(row){const cells=row.map(norm).filter(Boolean);let score=0;for(const f of fields){let best=0;for(const c of cells)for(const a of f.aliases){if(c===a)best=Math.max(best,5);else if(c.includes(a)||a.includes(c))best=Math.max(best,2)}score+=best}return score}
+function extractRowsFromMatrix(matrix){let bestIndex=-1,bestScore=0;for(let i=0;i<Math.min(matrix.length,30);i++){const sc=headerScore(matrix[i]||[]);if(sc>bestScore){bestScore=sc;bestIndex=i}}if(bestIndex<0||bestScore<5){const first=(matrix[0]||[]).map((v,i)=>String(v||'').trim()||`Column ${i+1}`);return{headers:first,rows:matrix.slice(1).map(row=>Object.fromEntries(first.map((h,i)=>[h,row[i]??'']))).filter(o=>Object.values(o).some(v=>String(v).trim())),sourceRowStart:2}}const hs=matrix[bestIndex].map((v,i)=>String(v??'').trim()||`Column ${i+1}`);const rows=matrix.slice(bestIndex+1).filter(row=>row.some(v=>String(v??'').trim())).map(row=>Object.fromEntries(hs.map((h,i)=>[h,row[i]??''])));return{headers:hs,rows}}
+function detectColumns(){columnMap={};const used=new Set();for(const f of fields){let best='',bestScore=0;for(const h of headers){if(used.has(h))continue;const nh=norm(h);let sc=0;for(const a of f.aliases){if(nh===a)sc=Math.max(sc,100);else if(nh.includes(a))sc=Math.max(sc,65);else if(a.includes(nh)&&nh.length>2)sc=Math.max(sc,35)}if(sc>bestScore){bestScore=sc;best=h}}if(best&&bestScore>=35){columnMap[f.key]=best;used.add(best)}}}
+function val(row,key){const h=columnMap[key];return h?row[h]:''}
+function addFinding(sev,type,truck,start,end,detail,source,extra={}){findings.push({severity:sev,type,truck,start:start?start.toISOString():'',end:end?end.toISOString():'',detail,source:source??'',...extra})}
+function haversineMeters(a,b){const R=6371000,toRad=x=>x*Math.PI/180,dLat=toRad(b.lat-a.lat),dLon=toRad(b.lon-a.lon),x=Math.sin(dLat/2)**2+Math.cos(toRad(a.lat))*Math.cos(toRad(b.lat))*Math.sin(dLon/2)**2;return 2*R*Math.asin(Math.sqrt(x))}
+function validPoint(p){return p.lat!==null&&p.lon!==null&&Number.isFinite(p.lat)&&Number.isFinite(p.lon)&&Math.abs(p.lat)<=90&&Math.abs(p.lon)<=180}
+function fmtDate(d){return d?new Date(d).toLocaleString():'—'}
+function mapsUrl(lat,lon){return `https://www.google.com/maps?q=${encodeURIComponent(lat+','+lon)}`}
+function makeStopNarrative(e){const place=e.location?`The GPS export identifies the location as “${e.location}”.`:'The GPS export does not contain a readable address or geofence name; the stop is therefore identified by its recorded coordinates.';const speedText=e.speedAvailable?` Recorded speed values during the stop were at or below 5 km/h.`:' No speed field was available, so stationary status was assessed from the clustering of consecutive GPS coordinates.';const gapText=e.maxPingGap>0?` The longest interval between consecutive GPS records within this stop was ${e.maxPingGap.toFixed(1)} minutes.`:'';return `GPS records for vehicle ${e.truck} show a stationary cluster beginning at ${fmtDate(e.start)} and ending at ${fmtDate(e.end)}, for an observed duration of ${e.durationMinutes.toFixed(1)} minutes. The recorded position was ${e.lat.toFixed(6)}, ${e.lon.toFixed(6)} (${e.lat.toFixed(6)}° latitude, ${e.lon.toFixed(6)}° longitude). ${place}${speedText}${gapText} The coordinates remained within the configured 75-metre stop radius. This is a GPS-indicated stop and does not, by itself, establish that the stop was unauthorized or explain the driver's activity. Validate the stop against the approved trip plan, dispatch instructions, delivery/waybill timestamps, driver explanation and any available ignition or geofence records.`}
+function analyze(){findings=[];quality=[];stopEvents=[];if(!rawRows.length){$('analysisStatus').innerHTML='<div class="notice error">No records available to analyze.</div>';return}const truckField=columnMap.truck,timeField=columnMap.time;const speedLimit=AUDIT_DEFAULTS.speedLimit,stopLimit=AUDIT_DEFAULTS.stopLimit,gapLimit=AUDIT_DEFAULTS.gapLimit;let invalidTime=0,missingTruck=0,invalidCoords=0,missingSpeed=0;normalized=rawRows.map((r,i)=>{const truck=String(val(r,'truck')??'').trim(),date=parseDate(val(r,'time')),lat=num(val(r,'lat')),lon=num(val(r,'lon')),speed=num(val(r,'speed'));if(!date)invalidTime++;if(!truck)missingTruck++;if((lat===null)!==(lon===null)||((lat!==null)&&(Math.abs(lat)>90||Math.abs(lon)>180)))invalidCoords++;if(speed===null)missingSpeed++;return{row:i+sourceRowStart,truck:truck||'(unassigned)',date,lat,lon,speed,status:String(val(r,'status')??''),location:String(val(r,'location')??''),odometer:num(val(r,'odometer')),duration:val(r,'duration')??'',distance:num(val(r,'distance')),raw:r}});
+normalized.forEach(p=>{if(p.date&&p.speed!==null&&p.speed>speedLimit)addFinding('High','Recorded speed above limit',p.truck,p.date,p.date,`Recorded ${p.speed} km/h; configured threshold ${speedLimit} km/h.`,p.row);if(timeField&&!p.date)addFinding('Medium','Invalid/missing timestamp',p.truck,null,null,'Timestamp could not be parsed; this row was excluded from time-based checks.',p.row);if(p.lat!==null&&p.lon!==null&&(Math.abs(p.lat)>90||Math.abs(p.lon)>180))addFinding('Medium','Invalid GPS coordinates',p.truck,p.date,p.date,`Latitude/longitude out of valid range: ${p.lat}, ${p.lon}.`,p.row)});
+const groups={};if(truckField&&timeField)normalized.filter(p=>p.date&&p.truck!=='(unassigned)').forEach(p=>(groups[p.truck]??=[]).push(p));
+for(const [truck,arr] of Object.entries(groups)){
+ arr.sort((a,b)=>a.date-b.date);let cluster=[];
+ const flushStop=()=>{if(cluster.length<2){cluster=[];return}const first=cluster[0],last=cluster[cluster.length-1],durationMinutes=(last.date-first.date)/60000;if(durationMinutes>=stopLimit){const lat=cluster.reduce((n,p)=>n+p.lat,0)/cluster.length,lon=cluster.reduce((n,p)=>n+p.lon,0)/cluster.length;const maxPingGap=Math.max(0,...cluster.slice(1).map((p,i)=>(p.date-cluster[i].date)/60000));const location=[...cluster].reverse().find(p=>p.location)?.location||'';const speeds=cluster.map(p=>p.speed).filter(v=>v!==null);const event={id:stopEvents.length+1,truck,start:first.date,end:last.date,durationMinutes,lat,lon,location,rows:cluster.map(p=>p.row),startRow:first.row,endRow:last.row,maxPingGap,speedAvailable:speeds.length>0,minSpeed:speeds.length?Math.min(...speeds):null,maxSpeed:speeds.length?Math.max(...speeds):null,pingCount:cluster.length};event.narrative=makeStopNarrative(event);stopEvents.push(event);const severity=durationMinutes>=60?'High':'Medium';addFinding(severity,'Prolonged stop',truck,first.date,last.date,`${durationMinutes.toFixed(1)} minutes stationary within a 75 m radius at ${lat.toFixed(6)}, ${lon.toFixed(6)}. ${cluster.length} GPS records; source rows ${first.row}–${last.row}.`,`${first.row}–${last.row}`,{stopId:event.id,lat,lon,durationMinutes,location});}cluster=[];};
+ for(const p of arr){if(!validPoint(p)){flushStop();continue}if(cluster.length){const prev=cluster[cluster.length-1],gap=(p.date-prev.date)/60000;if(gap>gapLimit){addFinding('Medium','GPS data gap',truck,prev.date,p.date,`No consecutive record for ${gap.toFixed(1)} minutes (threshold ${gapLimit} min). A continuous stop was not inferred across this gap.`,`${prev.row}–${p.row}`);flushStop();}}
+ const status=norm(p.status);const explicitlyMoving=/moving|driving|running/.test(status);const stationarySpeed=p.speed===null||p.speed<=5;const stationary=!explicitlyMoving&&stationarySpeed;
+ if(!stationary){flushStop();continue}
+ if(!cluster.length){cluster=[p];continue}
+ const anchor=cluster[0],distance=haversineMeters(anchor,p);if(distance<=75){cluster.push(p)}else{flushStop();cluster=[p]}
+ }
+ flushStop();
+}
+quality=[['Rows imported',rawRows.length],['Detected report columns',headers.length],['Rows with invalid/missing timestamp',invalidTime],['Rows with missing driver/vehicle identifier',missingTruck],['Rows with incomplete/out-of-range coordinates',invalidCoords],['Rows without speed value',missingSpeed],['Records with duration field',normalized.filter(p=>String(p.duration).trim()!=='').length],['Records with distance field',normalized.filter(p=>p.distance!==null).length],['Distinct driver/vehicle identifiers',new Set(normalized.map(p=>p.truck).filter(t=>t!=='(unassigned)')).size],['Prolonged stop events detected',stopEvents.length]];
+renderResults();const detectedText=fields.map(f=>`${f.key}: ${columnMap[f.key]||'not available'}`).join(' · ');$('detectionSummary').innerHTML=`<b>Automatic column detection</b><br>${escapeHtml(detectedText)}<br><b>Source columns:</b> ${headers.map(escapeHtml).join(', ')}<br><span class="small">Audit defaults: speed above ${speedLimit} km/h · prolonged stop ≥ ${stopLimit} min · GPS gap &gt; ${gapLimit} min · stop radius 75 m · stationary speed ≤ 5 km/h when speed data is available. Missing fields are skipped.</span>`;$('analysisStatus').innerHTML=`<div class="notice success">Automatic analysis complete: ${normalized.length.toLocaleString()} rows processed, ${findings.length} flags generated and ${stopEvents.length} detailed stop event(s) identified. Review each flag against operational evidence.</div>`;$('exportFlags').disabled=$('exportRows').disabled=$('exportStops').disabled=$('printReport').disabled=false;$('routeAuditBtn').disabled=false;setTab('results')}
+function renderStopCards(targetId,prefix){const host=$(targetId);if(!host)return;if(!stopEvents.length){host.innerHTML='<div class="empty">No prolonged stop met the configured threshold. This does not prove that every movement was compliant.</div>';return}host.innerHTML='<div class="stop-grid">'+stopEvents.map(e=>{const mapId=`${prefix}-stop-map-${e.id}`;const google=mapsUrl(e.lat,e.lon);return `<article class="stop-card"><div class="row" style="justify-content:space-between"><h3>Stop #${e.id} · ${escapeHtml(e.truck)}</h3><span class="status ${e.durationMinutes>=60?'high':'medium'}">${e.durationMinutes>=60?'High':'Review'}</span></div><div class="stop-meta"><div><small>Arrival / first stationary ping</small><b>${escapeHtml(fmtDate(e.start))}</b></div><div><small>Departure / last stationary ping</small><b>${escapeHtml(fmtDate(e.end))}</b></div><div><small>Observed duration (first-to-last stationary ping)</small><b>${e.durationMinutes.toFixed(1)} minutes</b></div><div><small>GPS records in cluster</small><b>${e.pingCount} records</b></div><div><small>Latitude</small><b>${e.lat.toFixed(6)}</b></div><div><small>Longitude</small><b>${e.lon.toFixed(6)}</b></div></div><div id="${mapId}" class="stop-map" aria-label="Map for stop ${e.id}"></div><div class="stop-links"><a href="${google}" target="_blank" rel="noopener">Open coordinates in Google Maps ↗</a><a href="https://www.openstreetmap.org/?mlat=${e.lat}&mlon=${e.lon}#map=16/${e.lat}/${e.lon}" target="_blank" rel="noopener">OpenStreetMap ↗</a></div><p class="stop-narrative"><b>Audit narrative</b><br>${escapeHtml(e.narrative)}</p><b>Audit evidence</b><ul class="evidence-list"><li>Source GPS row numbers: ${e.rows.join(", ")}</li><li>Coordinate cluster radius: 75 metres</li><li>Longest ping interval: ${e.maxPingGap.toFixed(1)} minutes</li><li>${e.speedAvailable?`Recorded speed range: ${e.minSpeed}–${e.maxSpeed} km/h`:'No speed field available; coordinate clustering used'}</li><li>Location field: ${escapeHtml(e.location||'Not supplied in GPS export')}</li></ul><p class="stop-narrative"><b>Recommended audit action</b><br>Obtain driver explanation and compare this stop against dispatch approval, planned route, delivery documents, trip schedule, geofence records and ignition data if available. Keep the finding as “for validation” until corroborated.</p></article>`}).join('')+'</div>';
+ if(window.L){stopEvents.forEach(e=>{const mapId=`${prefix}-stop-map-${e.id}`,el=$(mapId);if(!el)return;const map=L.map(el,{scrollWheelZoom:false}).setView([e.lat,e.lon],16);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap'}).addTo(map);L.marker([e.lat,e.lon]).addTo(map).bindPopup(`<b>${escapeHtml(e.truck)}</b><br>Stop #${e.id}<br>${e.durationMinutes.toFixed(1)} minutes`).openPopup();stopMaps.push(map);setTimeout(()=>map.invalidateSize(),100)});}}
 
-    <section class="hero">
-      <div class="eyebrow">Your workspace, in one place</div>
-      <h1>Welcome to your Project Hub.</h1>
-      <p>Access your monitoring and analysis tools from one central workspace. Choose a project below to open its dashboard.</p>
-      <div class="hero-accent"></div>
-    </section>
 
-    <div class="fuel-badge" aria-label="SEAOIL Fuel and Beyond">
-      <img
-        src="https://raw.githubusercontent.com/Juhurn/marine-vessel-monitoring-2026/main/SEAOIL_Fuel_and_Beyond.png"
-        alt="SEAOIL fuel and beyond"
-        onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <div class="fuel-fallback">fuel and <span>beyond</span></div>
-    </div>
-  </div>
-</header>
+// Route audit uses JSONP because Apps Script ContentService redirects are not
+// reliably readable through cross-origin fetch from a static GitHub Pages site.
+function requestDrivingRoute(origin,destination){
+  return new Promise((resolve,reject)=>{
+    const callback='gpsRouteCallback_'+Date.now()+'_'+Math.floor(Math.random()*100000);
+    const backend=$('routeBackend').value.trim();
+    if(!backend){reject(new Error('Enter the Apps Script Web App URL.'));return;}
+    const url=new URL(backend);
+    url.searchParams.set('action','route');
+    url.searchParams.set('olat',origin.lat);
+    url.searchParams.set('olng',origin.lon);
+    url.searchParams.set('dlat',destination.lat);
+    url.searchParams.set('dlng',destination.lon);
+    url.searchParams.set('callback',callback);
+    const script=document.createElement('script');
+    const timer=setTimeout(()=>{cleanup();reject(new Error('Route request timed out. Check deployment access and backend URL.'));},30000);
+    function cleanup(){clearTimeout(timer);delete window[callback];script.remove();}
+    window[callback]=(data)=>{cleanup();if(data&&data.success)resolve(data.route);else reject(new Error(data?.error||'Route lookup failed.'));};
+    script.onerror=()=>{cleanup();reject(new Error('Could not reach Apps Script backend. Check the Web App deployment.'));};
+    script.src=url.toString();
+    document.head.appendChild(script);
+  });
+}
+function decodePolyline(encoded){
+  let index=0,lat=0,lng=0,points=[];
+  while(index<encoded.length){
+    let b,shift=0,result=0;
+    do{b=encoded.charCodeAt(index++)-63;result|=(b&0x1f)<<shift;shift+=5;}while(b>=0x20);
+    lat+=(result&1)?~(result>>1):(result>>1);
+    shift=0;result=0;
+    do{b=encoded.charCodeAt(index++)-63;result|=(b&0x1f)<<shift;shift+=5;}while(b>=0x20);
+    lng+=(result&1)?~(result>>1):(result>>1);
+    points.push([lat/1e5,lng/1e5]);
+  }
+  return points;
+}
+function distancePointToSegmentMeters(p,a,b){
+  const lat0=p.lat*Math.PI/180, kx=111320*Math.cos(lat0), ky=110540;
+  const px=0,py=0, ax=(a[1]-p.lon)*kx, ay=(a[0]-p.lat)*ky, bx=(b[1]-p.lon)*kx, by=(b[0]-p.lat)*ky;
+  const dx=bx-ax,dy=by-ay,den=dx*dx+dy*dy;
+  const t=den?Math.max(0,Math.min(1,((px-ax)*dx+(py-ay)*dy)/den)):0;
+  return Math.hypot(px-(ax+t*dx),py-(ay+t*dy));
+}
+function distanceToRouteMeters(p,line){
+  let best=Infinity;
+  for(let i=1;i<line.length;i++)best=Math.min(best,distancePointToSegmentMeters(p,line[i-1],line[i]));
+  return best;
+}
+async function runRouteAudit(){
+  const btn=$('routeAuditBtn');if(!normalized.length)return;
+  btn.disabled=true;routeFindings=[];
+  $('routeStatus').className='notice info';
+  $('routeStatus').textContent='Retrieving Google driving routes and checking GPS points…';
+  const byTruck={};
+  normalized.filter(p=>p.date&&p.lat!==null&&p.lon!==null&&Math.abs(p.lat)<=90&&Math.abs(p.lon)<=180&&p.truck!=='(unassigned)')
+    .forEach(p=>(byTruck[p.truck]??=[]).push(p));
+  let checked=0,errors=[];
+  const tolerance=Math.max(50,Number($('routeTolerance').value)||500);
+  const required=Math.max(2,Number($('routeConsecutive').value)||3);
+  for(const [truck,points] of Object.entries(byTruck)){
+    points.sort((a,b)=>a.date-b.date);
+    if(points.length<2)continue;
+    const origin=points[0],destination=points[points.length-1];
+    if(origin.lat===destination.lat&&origin.lon===destination.lon)continue;
+    try{
+      const route=await requestDrivingRoute({lat:origin.lat,lon:origin.lon},{lat:destination.lat,lon:destination.lon});
+      const encoded=route?.polyline?.encodedPolyline;
+      if(!encoded)throw new Error('No encoded route returned.');
+      const line=decodePolyline(encoded);
+      if(line.length<2)throw new Error('Returned route geometry is incomplete.');
+      let run=[];
+      for(const p of points){
+        const distance=distanceToRouteMeters({lat:p.lat,lon:p.lon},line);
+        if(distance>tolerance)run.push({point:p,distance});
+        else{
+          if(run.length>=required){
+            const event=run[Math.floor(run.length/2)];
+            routeFindings.push({truck,point:event.point,distance:event.distance,count:run.length,start:run[0].point.date,end:run[run.length-1].point.date});
+          }
+          run=[];
+        }
+      }
+      if(run.length>=required){
+        const event=run[Math.floor(run.length/2)];
+        routeFindings.push({truck,point:event.point,distance:event.distance,count:run.length,start:run[0].point.date,end:run[run.length-1].point.date});
+      }
+      checked++;
+    }catch(err){errors.push(`${truck}: ${err.message}`);}
+  }
+  renderRouteFlags();
+  $('routeStatus').className=errors.length?'notice info':'notice success';
+  $('routeStatus').textContent=`Route audit complete. ${checked} truck route(s) checked; ${routeFindings.length} possible deviation event(s) detected.${errors.length?' Issues: '+errors.join(' | '):''} These are screening flags, not confirmed violations.`;
+  btn.disabled=false;
+}
+function renderRouteFlags(){
+  const box=$('routeFlagTable');
+  if(!routeFindings.length)box.innerHTML='<div class="empty">No route-deviation events met the configured screening criteria, or no route results were available.</div>';
+  else box.innerHTML='<table><thead><tr><th>Vehicle</th><th>Flag location</th><th>Distance off route</th><th>Off-route points</th><th>Time window</th><th>Map</th></tr></thead><tbody>'+routeFindings.map(f=>`<tr><td>${escapeHtml(f.truck)}</td><td>${f.point.lat.toFixed(6)}, ${f.point.lon.toFixed(6)}</td><td>${Math.round(f.distance)} m</td><td>${f.count}</td><td>${escapeHtml(new Date(f.start).toLocaleString())} – ${escapeHtml(new Date(f.end).toLocaleString())}</td><td><a target="_blank" rel="noopener" href="https://www.google.com/maps?q=${f.point.lat},${f.point.lon}">Open map</a></td></tr>`).join('')+'</tbody></table>';
+  if(!window.L)return;
+  if(!routeMap){routeMap=L.map('routeMap').setView([12.5,122.5],6);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap'}).addTo(routeMap);}
+  routeMarkers.forEach(m=>routeMap.removeLayer(m));routeMarkers=[];
+  const icon=L.divIcon({className:'',html:'<div class="flag-pin"></div>',iconSize:[16,16],iconAnchor:[8,8]});
+  routeFindings.forEach(f=>routeMarkers.push(L.marker([f.point.lat,f.point.lon],{icon}).addTo(routeMap).bindPopup(`<b>${escapeHtml(f.truck)}</b><br>Possible route deviation<br>${Math.round(f.distance)} m off route<br>${escapeHtml(new Date(f.point.date).toLocaleString())}`)));
+  if(routeMarkers.length)routeMap.fitBounds(L.featureGroup(routeMarkers).getBounds().pad(.2));
+}
+$('routeAuditBtn').onclick=runRouteAudit;
 
-<main>
-  <div class="section-head">
-    <div>
-      <h2>My Projects</h2>
-      <p>Select a project to continue.</p>
-    </div>
-    <span class="project-count">3 PROJECTS</span>
-  </div>
-
-  <section class="projects">
-    <article class="project-card">
-      <div class="card-top"></div>
-      <div class="card-content">
-        <div class="card-icon" aria-hidden="true">🚢</div>
-        <div class="card-kicker">Project 01 · Operations</div>
-        <h3>Marine Vessel Monitoring</h3>
-        <p class="card-desc">Monitor vessel movements, review product losses and transfer variances, and explore operational performance through the existing dashboard.</p>
-        <div class="features">
-          <span>Vessel Audit</span>
-          <span>Loss Analysis</span>
-          <span>Variance Reports</span>
-        </div>
-        <a class="open-link" href="https://juhurn.github.io/marine-vessel-monitoring-2026/">
-          <span>Open Marine Monitoring</span><span class="arrow">→</span>
-        </a>
-      </div>
-    </article>
-
-    <article class="project-card">
-      <div class="card-top"></div>
-      <div class="card-content">
-        <div class="card-icon" aria-hidden="true">🔎</div>
-        <div class="card-kicker">Project 02 · Image Review</div>
-        <h3>AI Image Forensics</h3>
-        <p class="card-desc">Review images for possible AI generation and signs of image manipulation. Reliable findings require a connected detection engine.</p>
-        <div class="features">
-          <span>Image Upload</span>
-          <span>AI Indicators</span>
-          <span>Manipulation Review</span>
-        </div>
-        <a class="open-link" href="https://juhurn.github.io/ai-image-forensics/">
-          <span>Open AI Image Forensics</span><span class="arrow">→</span>
-        </a>
-      </div>
-    </article>
-
-    <article class="project-card">
-      <div class="card-top"></div>
-      <div class="card-content">
-        <div class="card-icon" aria-hidden="true">🚚</div>
-        <div class="card-kicker">Project 03 · Fleet Monitoring</div>
-        <h3>GPS Truck Monitoring &amp; Audit System</h3>
-        <p class="card-desc">Monitor truck locations, track trip activity, and support operational audits through GPS-based fleet monitoring.</p>
-        <div class="features">
-          <span>GPS Tracking</span>
-          <span>Trip Monitoring</span>
-          <span>Audit Reports</span>
-        </div>
-        <a class="open-link" href="https://juhurn.github.io/gps-truck-monitoring/">
-          <span>Open GPS Truck Monitoring</span><span class="arrow">→</span>
-        </a>
-      </div>
-    </article>
-  </section>
-
-  <aside class="note">
-    <span aria-hidden="true">ℹ️</span>
-    <div>
-      <strong>Project access</strong><br>
-      This hub links to each project’s existing website. The dashboards remain separately hosted, so updates to this hub do not overwrite project data or dashboard code.
-    </div>
-  </aside>
-</main>
-
-<footer>
-  <span><strong>SEAOIL Project Hub</strong> · Central Project Portal</span>
-  <span>Built for streamlined project access</span>
-</footer>
-</body>
-</html>
+if($('analyzeBtn')) $('analyzeBtn').onclick=analyze;
+function renderResults(){stopMaps.forEach(m=>m.remove());stopMaps=[];const trucks=new Set(normalized.map(p=>p.truck).filter(t=>t!=='(unassigned)'));const high=findings.filter(f=>f.severity==='High').length;$('kpis').innerHTML=`<div class="kpi"><div class="label">Rows processed</div><div class="num">${normalized.length.toLocaleString()}</div></div><div class="kpi"><div class="label">Trucks identified</div><div class="num">${trucks.size}</div></div><div class="kpi alert"><div class="label">High-priority flags</div><div class="num">${high}</div></div><div class="kpi warn"><div class="label">Total flags</div><div class="num">${findings.length}</div></div>`;renderFindings();renderStopCards('stopInvestigationResults','results');renderStopCards('stopInvestigationReport','report');$('qualityTable').innerHTML='<table><thead><tr><th>Quality check</th><th>Count</th></tr></thead><tbody>'+quality.map(q=>`<tr><td>${escapeHtml(q[0])}</td><td>${q[1]}</td></tr>`).join('')+'</tbody></table>';$('reportSummary').innerHTML=`<b>Dataset:</b> ${escapeHtml(fileName)}<br><b>Rows:</b> ${normalized.length} · <b>Vehicles:</b> ${trucks.size} · <b>Findings:</b> ${findings.length} · <b>Prolonged stops:</b> ${stopEvents.length}<br><b>Audit rules:</b> speed &gt; ${AUDIT_DEFAULTS.speedLimit} km/h; stop ≥ ${AUDIT_DEFAULTS.stopLimit} min within 75 m; GPS gap &gt; ${AUDIT_DEFAULTS.gapLimit} min.`}
+function renderFindings(){const f=findings.filter(x=>$('severityFilter').value==='all'||x.severity===$('severityFilter').value);$('exceptionsTable').innerHTML=f.length?'<table><thead><tr><th>Severity</th><th>Finding</th><th>Vehicle</th><th>Start</th><th>End</th><th>Details</th><th>Source row(s)</th></tr></thead><tbody>'+f.map(x=>`<tr><td><span class="status ${x.severity.toLowerCase()}">${x.severity}</span></td><td>${escapeHtml(x.type)}</td><td>${escapeHtml(x.truck)}</td><td>${x.start?escapeHtml(new Date(x.start).toLocaleString()):'—'}</td><td>${x.end?escapeHtml(new Date(x.end).toLocaleString()):'—'}</td><td>${escapeHtml(x.detail)}</td><td>${escapeHtml(x.source)}</td></tr>`).join('')+'</tbody></table>':'<div class="empty">No flags match this filter. This does not guarantee that every trip was compliant.</div>'} $('severityFilter').onchange=renderFindings;
+function csvCell(v){let s=String(v??'');return /[",\r\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}function downloadCsv(name,rows){if(!rows.length){alert('No data to export.');return}const csv=rows.map(r=>r.map(csvCell).join(',')).join('\r\n');const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}$('exportFlags').onclick=()=>downloadCsv(`${fileName}-audit-findings.csv`,[['Severity','Finding','Vehicle ID','Start timestamp','End timestamp','Details','Source row(s)','Stop ID','Latitude','Longitude','Stop duration minutes','Location'],...findings.map(f=>[f.severity,f.type,f.truck,f.start,f.end,f.detail,f.source,f.stopId??'',f.lat??'',f.lon??'',f.durationMinutes??'',f.location??''])]);$('exportRows').onclick=()=>downloadCsv(`${fileName}-normalized-gps-data.csv`,[['Source row','Driver/Vehicle','Timestamp ISO','Latitude','Longitude','Speed km/h','Status/Event','Location','Odometer','Duration','Distance'],...normalized.map(p=>[p.row,p.truck,p.date?p.date.toISOString():'',p.lat??'',p.lon??'',p.speed??'',p.status,p.location,p.odometer??'',p.duration,p.distance??''])]);$('exportStops').onclick=()=>downloadCsv(`${fileName}-stop-investigation.csv`,[['Stop ID','Vehicle ID','First stationary ping','Last stationary ping','Observed duration (minutes)','GPS ping count','Latitude','Longitude','Location field','Longest ping interval (minutes)','Minimum recorded speed (km/h)','Maximum recorded speed (km/h)','Source GPS row numbers','Audit narrative'],...stopEvents.map(e=>[e.id,e.truck,e.start.toISOString(),e.end.toISOString(),e.durationMinutes.toFixed(1),e.pingCount,e.lat.toFixed(6),e.lon.toFixed(6),e.location,e.maxPingGap.toFixed(1),e.minSpeed??'',e.maxSpeed??'',e.rows.join('; '),e.narrative])]);$('printReport').onclick=()=>{setTab('report');window.print()};$('clearBtn').onclick=()=>{rawRows=[];headers=[];normalized=[];findings=[];quality=[];stopEvents=[];routeFindings=[];stopMaps.forEach(m=>m.remove());stopMaps=[];columnMap={};$('routeAuditBtn').disabled=true;$('routeFlagTable').innerHTML='<div class="empty">No route audit completed yet.</div>';$('detectionSummary').textContent='The system will inspect the uploaded file and identify available GPS fields automatically.';$('fileInput').value='';$('fileStatus').textContent='No file loaded.';$('mappingPanel').classList.add('hidden');$('analysisStatus').innerHTML='';$('exceptionsTable').innerHTML='<div class="empty">Upload and analyze a GPS file to see results.</div>';$('qualityTable').innerHTML='<div class="empty">No data analyzed yet.</div>';$('stopInvestigationResults').innerHTML='<div class="empty">Upload and analyze a GPS file to see detailed stop findings.</div>';$('stopInvestigationReport').innerHTML='<div class="empty">No stop findings available.</div>';$('exportFlags').disabled=$('exportRows').disabled=$('exportStops').disabled=$('printReport').disabled=true;setTab('upload')};
+$('sampleBtn').onclick=()=>{const base=new Date();base.setMinutes(0,0,0);const t=(m)=>new Date(base.getTime()+m*60000).toISOString();rawRows=[{'Vehicle ID':'TRK-001','Timestamp':t(0),'Latitude':14.5995,'Longitude':120.9842,'Speed (km/h)':42,'Status':'Moving','Location':'Sample point A'},{'Vehicle ID':'TRK-001','Timestamp':t(10),'Latitude':14.5995,'Longitude':120.9842,'Speed (km/h)':0,'Status':'Idle','Location':'Sample point A'},{'Vehicle ID':'TRK-001','Timestamp':t(50),'Latitude':14.5995,'Longitude':120.9842,'Speed (km/h)':0,'Status':'Idle','Location':'Sample point A'},{'Vehicle ID':'TRK-001','Timestamp':t(90),'Latitude':14.6100,'Longitude':121.0000,'Speed (km/h)':95,'Status':'Moving','Location':'Sample point B'},{'Vehicle ID':'TRK-002','Timestamp':t(0),'Latitude':10.3157,'Longitude':123.8854,'Speed (km/h)':35,'Status':'Moving','Location':'Sample point C'},{'Vehicle ID':'TRK-002','Timestamp':t(60),'Latitude':10.3300,'Longitude':123.9000,'Speed (km/h)':45,'Status':'Moving','Location':'Sample point D'}];headers=Object.keys(rawRows[0]);sourceRowStart=2;fileName='example-data-illustration';detectColumns();$('mappingPanel').classList.remove('hidden');$('fileStatus').textContent='Example data loaded (illustration only; not operational GPS records).';analyze();$('analysisStatus').innerHTML='<div class="notice info">This is example data for testing the workflow only. Upload a real GPS export for actual audit findings.</div>'};
+</script></body></html>
